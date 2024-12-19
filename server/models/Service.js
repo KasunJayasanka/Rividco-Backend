@@ -13,6 +13,10 @@ const serviceSchema = mongoose.Schema({
     type: String, // Base64 encoded image
     required: true,
   },
+  serviceCategory: {
+    type: String,
+    required: true,
+  },
 });
 
 const Service = mongoose.model("Service", serviceSchema);
