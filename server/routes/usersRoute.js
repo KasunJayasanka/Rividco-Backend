@@ -41,68 +41,70 @@ router.post("/quote",controller.GetAFreeQuoteSection,mailer.sendWelcomeEmail);
 
 // Route to add a new service
 router.post("/services", async (req, res) => {
-    try {
-      const { service, description, image } = req.body;
-      const newService = new Service({ service, description, image });
-      await newService.save();
-      res.status(201).json({ msg: "Service added successfully", success: true });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
-  
-  // Route to get all services
-  router.get("/services", async (req, res) => {
-    try {
-      const services = await Service.find();
-      res.status(200).json(services);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
-  // Route to update a service
+  try {
+    const { service, description, image, serviceCategory } = req.body;
+    const newService = new Service({ service, description, image, serviceCategory });
+    await newService.save();
+    res.status(201).json({ msg: "Service added successfully", success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Route to get all services
+router.get("/services", async (req, res) => {
+  try {
+    const services = await Service.find();
+    res.status(200).json(services);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Route to update a service
 router.put("/services/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { service, description, image } = req.body;
-      const updatedService = await Service.findByIdAndUpdate(
-        id,
-        { service, description, image },
-        { new: true }
-      );
-      if (!updatedService) {
-        return res.status(404).json({ error: "Service not found" });
-      }
-      res.status(200).json({ msg: "Service updated successfully", success: true });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+  try {
+    const { id } = req.params;
+    const { service, description, image, serviceCategory } = req.body;
+    const updatedService = await Service.findByIdAndUpdate(
+      id,
+      { service, description, image, serviceCategory },
+      { new: true }
+    );
+    if (!updatedService) {
+      return res.status(404).json({ error: "Service not found" });
     }
-  });
-  
-  // Route to delete a service
-  router.delete("/services/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const deletedService = await Service.findByIdAndDelete(id);
-      if (!deletedService) {
-        return res.status(404).json({ error: "Service not found" });
-      }
-      res.status(200).json({ msg: "Service deleted successfully", success: true });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+    res.status(200).json({ msg: "Service updated successfully", success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Route to delete a service
+router.delete("/services/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedService = await Service.findByIdAndDelete(id);
+    if (!deletedService) {
+      return res.status(404).json({ error: "Service not found" });
     }
-  });
-  /*..........................................projects .................................................... */
+    res.status(200).json({ msg: "Service deleted successfully", success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+ /*..........................................projects .................................................... */
 
 // Route to add a new project
 router.post("/projects", async (req, res) => {
   try {
-    const { title, description, images } = req.body;
-    const newProject = new Projects({ title, description, images });
+    const { title, description, category, images } = req.body;
+    const newProject = new Projects({ title, description, category, images });
     await newProject.save();
     res.status(201).json({ msg: "Project added successfully", success: true });
   } catch (error) {
@@ -126,10 +128,10 @@ router.get("/projects", async (req, res) => {
 router.put("/projects/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, images } = req.body;
+    const { title, description, category, images } = req.body;
     const updatedProject = await Projects.findByIdAndUpdate(
       id,
-      { title, description, images },
+      { title, description, category, images },
       { new: true }
     );
     if (!updatedProject) {
@@ -216,6 +218,20 @@ router.delete("/employees/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+/*..........................................summary .................................................... */
+
+// Route to get the total number of projects and services
+router.get("/summary", async (req, res) => {
+  try {
+    const totalProjects = await Projects.countDocuments();
+    const totalServices = await Service.countDocuments();
+    res.status(200).json({ totalProjects, totalServices });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 
 

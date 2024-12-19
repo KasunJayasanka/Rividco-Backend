@@ -9,6 +9,10 @@ const projectSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    required: true,
+  },
   images: [
     {
       type: String, // Base64 encoded image
