@@ -7,31 +7,6 @@ const Service = require('../models/Service'); // Import the Service model
 const Projects = require('../models/Projects'); // Import the Projects model
 const Employees = require('../models/Employees'); // Import the Employees model
 
-const  subscribeToNewsletter  = require("../utils/mailchimp");
-
-
-
-// POST /api/subscribe
-router.post("/subscribe", async (req, res) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
-
-  try {
-    const result = await subscribeToNewsletter(email);
-    if (result.success) {
-      res.status(200).json({ message: "Subscription successful!", data: result.data });
-    } else {
-      res.status(400).json({ message: result.message });
-    }
-  } catch (error) {
-    console.error("Subscription Error:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
 
 const  subscribeToNewsletter  = require("../utils/mailchimp");
 
