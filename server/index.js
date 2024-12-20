@@ -17,10 +17,16 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: ["http://localhost:3001"], 
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true
+// app.use(cors({
+//   origin: ["http://localhost:3001"], 
+//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+//   credentials: true
+// }));
+
+ app.use(cors({
+  origin: 'https://rividco.netlify.app', // Allow your frontend's origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'] // Specify allowed headers
 }));
 
 app.use(morgan("tiny"));
