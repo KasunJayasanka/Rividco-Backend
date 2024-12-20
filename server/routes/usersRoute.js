@@ -114,15 +114,20 @@ router.post("/projects", async (req, res) => {
 });
 
 // Route to get all projects
-router.get("/projects", async (req, res) => {
-  try {
-    const projects = await Projects.find();
-    res.status(200).json(projects);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+router.get("/projects", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://rividco.netlify.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  Projects.find()
+    .then(projects => res.status(200).json(projects))
+    .catch(error => {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
 });
+
 
 // Route to update a project
 router.put("/projects/:id", async (req, res) => {
