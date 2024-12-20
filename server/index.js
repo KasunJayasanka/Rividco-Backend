@@ -18,17 +18,10 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3002", "http://localhost:3000", "http://localhost:5173"], 
+  origin: ["http://localhost:3001"], 
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true
 }));
-
-const config = {
-  origin: ["http://localhost:3002", "http://localhost:3000", "http://localhost:5173"], 
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true
-};
-app.options("",cors(config));
 
 app.use(morgan("tiny"));
 app.use(express.json());
